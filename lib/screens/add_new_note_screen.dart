@@ -57,7 +57,13 @@ class AddNewNoteScreen extends StatelessWidget {
   }
 
   void insertNote()async{
-    await dbHelper.insert(title, describtion);
+    int res =  await dbHelper.insert(title, describtion);
+    if(res >1){
+      print(res);
+    }else{
+      print(res);
+    }
+
   }
 
 }

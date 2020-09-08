@@ -1,11 +1,11 @@
 import 'dart:io';
 
+import 'package:my_note/models/note.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class DatabaseHelper{
-
+class DatabaseHelper {
   static final _databaseName = "MyDatabase.db";
   static final _databaseVersion = 1;
   static final noteTable = "note_table";
@@ -15,7 +15,7 @@ class DatabaseHelper{
   static final noteDescribtion = "note_describtion";
   static final noteDate = "note_date";
 
-  static  Database _database ;
+  static Database _database;
 
   Future<Database> get database async {
     if (_database != null) return _database;
@@ -38,22 +38,19 @@ class DatabaseHelper{
     );
   }
 
- Future<int> insert(String title,String desc)async{
+  Future<int> insert(String title, String desc) async {
     await database;
-    return await _database.insert(noteTable, {
-        "note_title":title,
-        "note_describtion":desc,
-        "note_date":DateTime.now().toString()
-    });
- }
+    return await _database.insert(
+        noteTable, Note(title: title, describtion: desc).toMap());
+  }
 
- Future<List<Map<String,dynamic>>> getNotesData()async{
+  Future<List<Map<String, dynamic>>> getNotesData() async {
     await database;
     return await _database.rawQuery("SELECT * FROM $noteTable");
- }
+  }
 
- Future<int> deleteItem(int id)async{
+  Future<int> deleteItem(int id) async {
     await database;
-   return await _database.delete(noteTable,where: "id=?",whereArgs: [id]);
- }
+    return await _database.delete(noteTable, where: "id=?", whereArgs: [id]);
+  }
 }
