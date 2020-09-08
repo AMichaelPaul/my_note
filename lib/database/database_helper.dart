@@ -39,9 +39,9 @@ class DatabaseHelper {
   }
 
   Future<int> insert(String title, String desc) async {
+    Note note = Note(title: title, describtion: desc);
     await database;
-    return await _database.insert(
-        noteTable, Note(title: title, describtion: desc).toMap());
+    return await _database.insert(noteTable, note.toMap());
   }
 
   Future<List<Map<String, dynamic>>> getNotesData() async {
